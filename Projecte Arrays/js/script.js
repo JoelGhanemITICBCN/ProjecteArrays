@@ -64,59 +64,27 @@ fetch("js/data/movies.json")
     console.log("FI dades Totals");
   });
 
-
-
-
-
-
- //FUNCIONS 
+//FUNCIONS
 function refresca() {
   location.reload();
 }
 function ordenaAsc() {
-  dadesMeteorits.sort(function (a, b) {
+  dades.sort(function (a, b) {
     return a.localeCompare(b);
   });
-  console.log(dadesMeteorits);
-  console.log("Meteorits asc");
-  dadesPokemon.sort(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesPokemon);
-  console.log("Pokemon asc");
-  dadesMunicipis.sort(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesMunicipis);
-  console.log("Municipis asc");
-  dadesMovies.sort(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesMovies);
-  console.log("Movies asc");
+  console.log("ordenaAsc");
+  console.log(`El primer dato es `);
+  console.log(JSON.stringify(dades[1]));
+  printList();
 }
 function ordenaDesc() {
-  dadesMeteorits.reverse(function (a, b) {
+  dades.reverse(function (a, b) {
     return a.localeCompare(b);
   });
-  console.log(dadesMeteorits);
-  console.log("Meteorits desc");
-  dadesPokemon.reverse();
-  dadesPokemon.reverse(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesPokemon);
-  console.log("Pokemon desc");
-  dadesMunicipis.reverse(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesMunicipis);
-  console.log("Municipis desc");
-  dadesMovies.reverse(function (a, b) {
-    return a.localeCompare(b);
-  });
-  console.log(dadesMovies);
-  console.log("Movies desc");
+  console.log("ordenaDesc");
+  console.log(`El primer dato es`); 
+  console.log(JSON.stringify(dades[1]));
+  printList();
 }
 function busca() {
   let NomABuscar = prompt("Que vols buscar?");
@@ -141,88 +109,107 @@ function searchList() {
   dadesPokemon = dadesPokemon.filter((element) => element.includes(peticion));
   printList();
 }
+
 function printList() {
-  var categorias = document.getElementById('categorias');
+  var categorias = document.getElementById("categorias");
   var divResultat = document.getElementById("resultat");
 
   if (!categorias || !divResultat) {
-    console.error('No se pudo encontrar uno o más elementos necesarios.');
+    console.error("No se pudo encontrar uno o más elementos necesarios.");
     return;
   }
 
-  categorias.addEventListener('change', function() {
-    var categoria = document.querySelector('input[name="categoria"]:checked').value;
+  categorias.addEventListener("change", function () {
+    var categoria = document.querySelector(
+      'input[name="categoria"]:checked'
+    ).value;
     alert(`La categoría es ${categoria}`);
-  
-    var datos, headers, properties;
+
+    var  headers, properties;
     //POKEMON
     if (categoria == "pokemon") {
-      datos = dadesPokemon;
-      headers = ['ID', 'Nombre', 'Imagen', 'Peso'];
-      properties = ['id', 'name', 'img', 'weight'];
-    } 
-    
+      dades = dadesPokemon;
+      headers = ["ID", "Nombre", "Imagen", "Peso"];
+      properties = ["id", "name", "img", "weight"];
+    }
+
     //MUNICIPIOS
     else if (categoria == "municipios") {
-      datos = dadesMunicipis;
+      dades = dadesMunicipis;
       console.log("dades municipis en lo de la tavbla");
       console.log(dadesMunicipis);
-      headers = ['INE', 'Nombre', 'Imagen', 'Bandera'];
-      properties = ['ine', 'municipi_nom', 'municipi_vista', 'municipi_bandera'];
-    } 
+      headers = ["INE", "Nombre", "Imagen", "Bandera"];
+      properties = [
+        "ine",
+        "municipi_nom",
+        "municipi_vista",
+        "municipi_bandera",
+      ];
+    }
 
     //METEORITOS
     else if (categoria == "meteoritos") {
-      datos = dadesMeteorits;
-      headers = ['ID', 'Nombre', 'Año', 'Masa'];
-      properties = ['id', 'name', 'year', 'mass'];
-    } 
+      dades = dadesMeteorits;
+      headers = ["ID", "Nombre", "Clase", "Masa"];
+      properties = ["id", "name", "recclass", "mass"];
+    }
 
     //PELICULAS
     else if (categoria == "peliculas") {
-      datos = dadesMovies;
-      headers = ['Título','Año','Imagen','Reating'];
-      properties = ['title', 'year', 'url', 'rating'];
+      dades = dadesMovies;
+      headers = ["Título", "Año", "Imagen", "Reating"];
+      properties = ["title", "year", "url", "rating"];
     }
-  
-    var table = generarTabla(datos, headers, properties);
+
+    var table = generarTabla(dades, headers, properties);
     divResultat.innerHTML = "";
     divResultat.appendChild(table);
-  });
-  ;
+
+    document.getElementById("ordenaAsc").addEventListener("click", function(event) {
+      event.preventDefault(); 
+      ordenaAsc();
+    });
+    document.getElementById("ordenaDesc").addEventListener("click", function(event) {
+      event.preventDefault(); 
+      ordenaDesc();
+    });
+    });
 }
 
-function generarTabla(datos, headers, properties) {
+function generarTabla(dades, headers, properties) {
   var table = document.createElement("table");
-  table.style.width = '100%'; 
-  table.style.borderCollapse = 'collapse';
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
 
   var headerRow = document.createElement("tr");
   headers.forEach((header) => {
     var th = document.createElement("th");
     th.textContent = header;
-    th.style.padding = '10px'; 
-    th.style.border = '1px solid black'; 
+    th.style.padding = "10px";
+    th.style.border = "1px solid black";
     headerRow.appendChild(th);
   });
   table.appendChild(headerRow);
 
-  datos.forEach((item) => {
+  dades.forEach((item) => {
     var row = document.createElement("tr");
 
     properties.forEach((property) => {
       var cell = document.createElement("td");
       var value = item[property];
-      if (typeof value === 'string' && (value.startsWith('http://') || value.startsWith('https://'))) {
+      if (
+        typeof value === "string" &&
+        (value.startsWith("http://") || value.startsWith("https://"))
+      ) {
         var img = document.createElement("img");
         img.src = value;
-        img.style.width = '100px'; 
+        img.style.width = "100px";
         cell.appendChild(img);
       } else {
         cell.textContent = value;
       }
-      cell.style.padding = '10px'; 
-      cell.style.border = '1px solid black'; 
+      cell.style.padding = "10px";
+      cell.style.border = "1px solid black";
       row.appendChild(cell);
     });
 
