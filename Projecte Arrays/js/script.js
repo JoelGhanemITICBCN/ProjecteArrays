@@ -1,4 +1,5 @@
 // POKEMONS
+var num = 0;
 let dades;
 let dadesPokemon = [];
 let dadesMunicipis = [];
@@ -75,16 +76,17 @@ function ordenaAsc() {
   console.log("ordenaAsc");
   console.log(`El primer dato es `);
   console.log(JSON.stringify(dades[1]));
-  printList();
+  //printList();
 }
 function ordenaDesc() {
   dades.reverse(function (a, b) {
     return a.localeCompare(b);
   });
   console.log("ordenaDesc");
-  console.log(`El primer dato es`); 
+  console.log(`El primer dato es`);
   console.log(JSON.stringify(dades[1]));
-  printList();
+  //printList();
+  console.log("se supone que ya se ha vuelto as mostrar");
 }
 function busca() {
   let NomABuscar = prompt("Que vols buscar?");
@@ -111,6 +113,7 @@ function searchList() {
 }
 
 function printList() {
+  console.log("se llama a print");
   var categorias = document.getElementById("categorias");
   var divResultat = document.getElementById("resultat");
 
@@ -123,12 +126,14 @@ function printList() {
     var categoria = document.querySelector(
       'input[name="categoria"]:checked'
     ).value;
-    alert(`La categoría es ${categoria}`);
+    //alert(`La categoría es ${categoria}`);
 
-    var  headers, properties;
+    var headers, properties;
     //POKEMON
     if (categoria == "pokemon") {
       dades = dadesPokemon;
+      console.log(`El primer valor es ${dades[1]}`);
+      console.log(`El ultim valor es ${dades[-1]}`);
       headers = ["ID", "Nombre", "Imagen", "Peso"];
       properties = ["id", "name", "img", "weight"];
     }
@@ -136,6 +141,8 @@ function printList() {
     //MUNICIPIOS
     else if (categoria == "municipios") {
       dades = dadesMunicipis;
+      console.log(`El primer valor es ${dades[1]}`);
+      console.log(`El ultim valor es ${dades[-1]}`);
       console.log("dades municipis en lo de la tavbla");
       console.log(dadesMunicipis);
       headers = ["INE", "Nombre", "Imagen", "Bandera"];
@@ -149,14 +156,22 @@ function printList() {
 
     //METEORITOS
     else if (categoria == "meteoritos") {
+      console.log("meteoritos");
       dades = dadesMeteorits;
+      console.log(`El primer valor es ${dades[0]}`);
+      console.log(`El ultim valor es ${dades[-1]}`);
       headers = ["ID", "Nombre", "Clase", "Masa"];
       properties = ["id", "name", "recclass", "mass"];
     }
 
     //PELICULAS
     else if (categoria == "peliculas") {
+      console.log("pelis");
       dades = dadesMovies;
+      console.log(`El primer valor es ${dades[0]}`);
+      console.log(JSON.stringify(dades[1]));
+      console.log(`El ultim valor es ${dades[-1]}`);
+      console.log(JSON.stringify(dades[-1]));
       headers = ["Título", "Año", "Imagen", "Reating"];
       properties = ["title", "year", "url", "rating"];
     }
@@ -165,15 +180,21 @@ function printList() {
     divResultat.innerHTML = "";
     divResultat.appendChild(table);
 
-    document.getElementById("ordenaAsc").addEventListener("click", function(event) {
-      event.preventDefault(); 
-      ordenaAsc();
-    });
-    document.getElementById("ordenaDesc").addEventListener("click", function(event) {
-      event.preventDefault(); 
-      ordenaDesc();
-    });
-    });
+    document
+      .getElementById("ordenaAsc")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        ordenaAsc();
+      });
+    document
+      .getElementById("ordenaDesc")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+        ordenaDesc();
+        console.log(`"numero de veces que se ejecuta ${num}`);
+        num++;
+      });
+  });
 }
 
 function generarTabla(dades, headers, properties) {
