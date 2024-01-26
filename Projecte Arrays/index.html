@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<script src="js/script.js"></script>
 </head>
+
 <body>
+	<input type="text" id="miInput" onkeyup="miFuncion()">
 	<button onclick="refresca()">Refresca tot</button>
 	<button onclick="ordenaAsc()">Ordena tot de manera ascendent</button>
 	<button onclick="ordenaDesc()">Ordena tot de manera descendent</button>
@@ -18,12 +20,19 @@
 		<label for="pokemon">Pokemon</label><br>
 		<input type="button" id="peliculas" name="categoria" value="peliculas" onclick="cambiaCategoria('peliculas')">
 		<label for="peliculas">Películas</label><br>
-		<input type="button" id="meteoritos" name="categoria" value="meteoritos" onclick="cambiaCategoria('meteoritos')">
+		<input type="button" id="meteoritos" name="categoria" value="meteoritos"
+			onclick="cambiaCategoria('meteoritos')">
 		<label for="meteoritos">Meteoritos</label><br>
-		<input type="button" id="municipios" name="categoria" value="municipios" onclick="cambiaCategoria('municipios')">
+		<input type="button" id="municipios" name="categoria" value="municipios"
+			onclick="cambiaCategoria('municipios')">
 		<label for="municipios">Municipios</label>
-	  </form>
-	  
+	</form>
+	<div class="chart-container" style="position: relative; width:700px">
+		<canvas id="myChart" width="400" height="400"></canvas>
+	</div>
 	<div id="resultat"></div>
+	<script src="js/script.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
+
 </html>
