@@ -1,5 +1,6 @@
 //VARIABLES GLOBALS
 let contador = 0;
+let myChart;
 let arrayLabels; // Aquest array ha de contenir els diferents tipus (labels) com a valors únics
 let arrayDadesGraf; // Aquest array ha de contenir la quantitat de pokemons (o altres dades) per a cada tipus
 let backgroundColor; // Aquest array ha de contenir els colors per al fons
@@ -8,6 +9,7 @@ var isAscending = true;
 var sortProperty = "name";
 var isAscending = true;
 var headers, properties;
+let calculaM = 0;
 let categoria = "";
 let dades = [];
 let dadesPokemon = [];
@@ -59,47 +61,73 @@ function cambiaCategoria(novaCategoria) {
   categoria = novaCategoria;
   seleccionaDB(categoria);
 }
-
+function destoyChart() {
+  if (myChart) {
+    myChart.destroy();
+    myChart = null;
+  }
+}
 function seleccionaDB(categoria) {
   console.log("seleciona db");
   let dataKey = ""; // La clau que s'utilitzarà per a les dades específiques
 
   //POKEMON
   if (categoria == "pokemon") {
+    destoyChart();
     dades = dadesPokemon;
     headers = ["ID", "Nombre", "Imagen", "Peso"];
     properties = ["id", "name", "img", "weight"];
     sortProperty = "id";
+    calculaM = "weight";
     dataKey = "type";
   }
 
   //MUNICIPIOS
   else if (categoria == "municipios") {
+    destoyChart();
     dades = dadesMunicipis;
     headers = ["INE", "Nombre", "Imagen", "Bandera"];
     properties = ["ine", "municipi_nom", "municipi_vista", "municipi_bandera"];
     sortProperty = "ine";
+    calculaM = "nombre_habitants";
     dataKey = "comarca";
   }
 
   //METEORITOS
   else if (categoria == "meteoritos") {
+    destoyChart();
     dades = dadesMeteorits;
     headers = ["ID", "Nombre", "Clase", "Masa"];
     properties = ["id", "name", "recclass", "mass"];
     sortProperty = "id";
+    calculaM = "mass";
     dataKey = "recclass";
   }
 
   //PELICULAS
   else if (categoria == "peliculas") {
+    destoyChart();
     dades = dadesMovies;
     headers = ["Título", "Año", "Imagen", "Rating"];
     properties = ["title", "year", "url", "rating"];
     sortProperty = "title";
+    calculaM = "rating";
     dataKey = "genres";
   }
-  let dadesAGraf = dades.map((dada) => dada[dataKey]);
+  let dadesAGraf = dades.map((dada) => {
+    let data = dada[dataKey];
+    console.log("data");
+    console.log(data);
+    if (data) {
+      if (data.includes(",")) {
+        return data.split(",");
+      } else {
+        return data;
+      }
+    }
+  });
+  console.log("dadesAGraf");
+  console.log(dadesAGraf);
   let counts = {};
 
   // Recorre totes les dades
@@ -117,6 +145,24 @@ function seleccionaDB(categoria) {
   generaGrafica();
   printList();
 }
+function mitjana() {
+  let total = 0;
+  dades.forEach((dada) => {
+    total += parseInt(dada[calculaM]);
+  });
+  total = (total / dades.length).toFixed(2);
+  let boton = document.getElementById("mitjana");
+  let span = boton.nextSibling;
+  if(span && span.tagName === "SPAN") {
+    span.innerHTML = "";
+  } else {
+    span = document.createElement("span");
+    boton.parentNode.insertBefore(span, boton.nextSibling);
+  }
+  span.textContent = " Total: " + total;
+}
+
+
 function printList() {
   var resultat = document.getElementById("resultat");
   resultat.innerHTML = "";
@@ -217,7 +263,8 @@ function buscaTextoEnTiempoReal(texto) {
 }
 
 function generaGrafica() {
- ;
+  let borrarGraf = document.getElementById("resultat");
+  borrarGraf.innerHTML = "";
   console.log("Llega a generaGrafica");
   console.log("Muestra arrayDadesGraf");
   console.log(arrayDadesGraf);
@@ -249,15 +296,24 @@ function generaGrafica() {
       },
     },
   };
-  const myChart = new Chart(document.getElementById("myChart"), config);
- if (contador != 0) {
-    if (myChart != null) {
-      myChart.destroy();
-    }
-  }
-  contador++
+  myChart = new Chart(document.getElementById("myChart"), config);
+
+  contador++;
 }
 
+document.getElementById("myInput").addEventListener("search", busca);
+
+function busca() {
+  let buscador = getElementById("myinput");
+  if (buscador !== "") {
+    arrayBuscador = dades.filter((objecte) =>
+      objecte[2].toLowerCase().includes(buscador.toLowerCase())
+    );
+  } else {
+    arrayBuscador = dades;
+  }
+  printList(buscador);
+}
 function getRandomColor() {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);

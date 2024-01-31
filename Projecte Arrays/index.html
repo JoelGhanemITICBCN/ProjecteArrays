@@ -9,12 +9,13 @@
 </head>
 
 <body>
-	<input type="text" id="miInput" onkeyup="miFuncion()">
+	<input type="search" id="miInput">
 	<button onclick="refresca()">Refresca tot</button>
 	<button onclick="ordenaAsc()">Ordena tot de manera ascendent</button>
 	<button onclick="ordenaDesc()">Ordena tot de manera descendent</button>
-	<button id="search">Busca un nom</button>
+	<button id="busca">Busca un nom</button>
 	<button onclick="mitjana()">Calcula la mitjana</button>
+	<div id="mitjana"></div>
 	<form id="categorias">
 		<input type="button" id="pokemon" name="categoria" value="pokemon" onclick="cambiaCategoria('pokemon')">
 		<label for="pokemon">Pokemon</label><br>
